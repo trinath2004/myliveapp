@@ -20,6 +20,8 @@ src/
   restaurants.js     restaurants by state and district (name, cuisine, rating, area, famous dish)
   famousPlaces.js    temples, forts, beaches, waterfalls, lakes, dams, museums, wildlife
   shopsMarkets.js    shops, markets, sweets, handloom and handicrafts
+  data.js            shared state and district options
+  catalog.js         lookups for the restaurants, places and shops
   feedbackApi.js     feedback storage (Supabase, with a local fallback)
   components/        Home, Results, RestaurantCard, ShopCard, Feedback, Logo
   App.jsx, main.jsx, index.css
