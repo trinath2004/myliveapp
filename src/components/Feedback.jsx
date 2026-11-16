@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { IS_ONLINE, addComment, deleteComment, listComments } from "../feedbackApi";
+import { IS_ONLINE, addComment, deleteComment, listComments } from "../services/feedbackApi";
 
 function timeAgo(iso) {
   const s = Math.max(1, Math.floor((Date.now() - new Date(iso).getTime()) / 1000));

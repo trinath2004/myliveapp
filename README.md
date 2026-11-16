@@ -1,51 +1,61 @@
-# MTS - Famous Places Finder
+# MTS Famous Places Finder
 
-BY Trinath Bysani
+BY Trinath Bysani. A React + Vite web app that tells visitors what is **famous in every district of
+Andhra Pradesh and Telangana**. It is an information app: there are no accounts, no selling and no orders.
 
-Pick a state and district in Andhra Pradesh or Telangana to see its famous restaurants (with ratings),
-famous places, and shops and markets, each with its location and a Google Maps link.
-Visitors can also leave feedback and suggestions; only the author of a comment can delete it.
+## What is inside
+
+| Page | What visitors get |
+|---|---|
+| **Home** | Pick a state and district, a "Heritage of the day" card, and a visitor feedback wall |
+| **Explore** | Famous restaurants (with ratings), famous places, and shops and markets for the district, each with **Open in Maps / Show map** |
+| **Heritage Hub** | 45 famous foods, handlooms and crafts, with history, the artisans behind them and a **map of where to find them** at the bottom of every item |
+| **Cultural Trail** | Save favourite specialties (no sign-in), plan the whole route in Google Maps, share the list on WhatsApp |
+
+Extras for visitors: dark and light mode, search and filters (state, district, category, GI-tagged only),
+"Surprise me", shareable links to any item (`#/heritage?item=h-pochampally`), WhatsApp share buttons,
+"where to eat in this district" cross-links, and an installable app experience (Add to Home Screen) that also
+opens offline after the first visit.
 
 ## Run locally
 
 ```bash
 npm install
-npm run dev
+npm run dev        # http://localhost:5173
+npm test           # 15 tests
+npm run lint && npm run build
 ```
+
+## Deploy (Vercel)
+
+Push to GitHub and import the repository in Vercel. Framework: Vite, build `npm run build`, output `dist`.
+The app uses hash links (`/#/heritage`), so no server settings are needed.
+
+## Adding or editing information
+
+Everything lives in `src/data/`:
+
+- `heritageData.js` : Heritage Hub items. Copy an existing entry. Optional fields: `season`, and `mapQuery`
+  (the exact text Google Maps should search; by default it is `origin, district, state`).
+- `restaurants.js`, `famousPlaces.js`, `shopsMarkets.js` : Explore page data.
+
+Check any "GI-tagged" statement against the official GI registry before using it in formal material.
+
+## Visitor feedback (optional)
+
+The feedback wall works without setup (comments stay in the visitor's browser). To share comments between all
+visitors, create a free Supabase project, run `supabase-setup.sql`, then copy `.env.example` to `.env` and fill in
+the two values. **Do not commit `.env`** (it is already listed in `.gitignore`).
 
 ## Project structure
 
 ```
 src/
-  restaurants.js     restaurants by state and district (name, cuisine, rating, area, famous dish)
-  famousPlaces.js    temples, forts, beaches, waterfalls, lakes, dams, museums, wildlife
-  shopsMarkets.js    shops, markets, sweets, handloom and handicrafts
-  data.js            shared state and district options
-  catalog.js         lookups for the restaurants, places and shops
-  feedbackApi.js     feedback storage (Supabase, with a local fallback)
-  components/        Home, Results, RestaurantCard, ShopCard, Feedback, Logo
-  App.jsx, main.jsx, index.css
-supabase-setup.sql   one-time database setup for the feedback section
+  App.jsx, main.jsx       routes (HashRouter) and providers
+  pages/                  HomePage, ResultsPage (Explore), HeritagePage, TrailPage
+  components/             HeritageCard, ItemModal, MapPanel, ArtisanSpotlight, FeaturedHeritage, Feedback, ...
+  context/                Theme, Toast, Location (selected district), Trail (saved items)
+  data/                   all the information shown in the app
+  utils/maps.js           Google Maps and WhatsApp link helpers
+public/                   favicon, icons, manifest.webmanifest, sw.js (offline support)
 ```
-
-To add an entry, add one line to the right district in `restaurants.js`, `famousPlaces.js` or `shopsMarkets.js`.
-Ratings are approximate (out of 5); `rating: null` shows as "Local favourite".
-
-## Feedback database setup
-
-Comments need a free Supabase project so every visitor sees them (without it the app runs in demo mode
-and keeps comments only in the visitor's own browser).
-
-1. Create a project at https://supabase.com
-2. SQL Editor -> New query -> paste `supabase-setup.sql` -> Run
-3. Project Settings -> API Keys: copy the Project URL and the publishable (or anon) key
-4. Create `.env.local` with:
-   ```
-   VITE_SUPABASE_URL=https://YOUR-PROJECT-ID.supabase.co
-   VITE_SUPABASE_ANON_KEY=YOUR-KEY
-   ```
-5. On Vercel add the same two variables under Settings -> Environment Variables, then redeploy.
-
-## Deploy
-
-Push to GitHub and import the repository on Vercel (Vite is detected automatically).
