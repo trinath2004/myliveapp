@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, NavLink, Outlet } from "react-router-dom";
 import { useTrail } from "../context/TrailContext";
 import ThemeToggle from "../components/ThemeToggle";
+import { FeatureGlobals, MoreMenu, NavTools } from "../features/FeatureChrome";
 
 export default function MainLayout() {
   const { items } = useTrail();
@@ -22,12 +23,15 @@ export default function MainLayout() {
           <NavLink to="/explore" onClick={close}>Explore</NavLink>
           <NavLink to="/heritage" onClick={close}>Heritage Hub</NavLink>
           <NavLink to="/trail" onClick={close}>Cultural Trail{items.length > 0 && <span className="count-pill">{items.length}</span>}</NavLink>
+          <MoreMenu onNavigate={close} />
         </div>
 
+        <NavTools />
         <div className="nav-actions"><ThemeToggle /></div>
       </nav>
 
       <div className="app-main"><Outlet /></div>
+      <FeatureGlobals />
     </div>
   );
 }

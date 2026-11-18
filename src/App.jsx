@@ -10,6 +10,7 @@ import ResultsPage from "./pages/ResultsPage";
 import HeritagePage from "./pages/HeritagePage";
 import TrailPage from "./pages/TrailPage";
 import { NotFoundPage } from "./pages/StatusPages";
+import { FEATURE_ROUTES } from "./features"; // new pages (trip planner, map, guides, ...)
 
 /**
  * A public, information-only app: no accounts, no selling. HashRouter keeps deep links working on
@@ -28,6 +29,8 @@ export default function App() {
                   <Route path="explore" element={<ResultsPage />} />
                   <Route path="heritage" element={<HeritagePage />} />
                   <Route path="trail" element={<TrailPage />} />
+
+                  {FEATURE_ROUTES}
 
                   {/* Old links from earlier versions */}
                   <Route path="wishlist" element={<Navigate to="/trail" replace />} />
